@@ -1,19 +1,12 @@
 import 'dotenv/config';
-import mysql from 'mysql';
-
-const DB_USER = process.env.DB_USER;
-const DB_PASSWD = process.env.DB_PASSWD;
+import mysql from 'mysql2';
 
 const con = mysql.createConnection({
-  host: 'localhost',
-  user: DB_USER,
-  password: DB_PASSWD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWD,
   database: 'cooker_site',
-});
-
-con.connect((err) => {
-  if (err) throw err;
-  console.log('DB Connected!');
 });
 
 export default con;
