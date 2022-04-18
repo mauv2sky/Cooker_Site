@@ -1,11 +1,11 @@
-import db from '../../db/models';
+import { User } from '../../db/models/model/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 class userAuthService {
-  static async addUser({ userId, passwd }) {
+  static async addUser({ userId, passwd, email, tel }) {
     // 아이디 중복 확인
-    const user = await db.User.findOne({ where: { userId } });
+    const user = await User.findByUserId(userId);
     if (user) {
       const errorMessage = '중복된 아이디입니다. 다른 아이디를 입력해 주세요.';
       return { errorMessage };
@@ -15,10 +15,10 @@ class userAuthService {
     const hashedPasswd = await bcrypt.hash(passwd, 10);
 
     // db에 저장할 유저 객체 생성
-    const newUser = { userId, passwd: hashedPasswd };
+    const newUser = { userId, passwd: hashedPasswd, email, tel };
 
     // db에 저장
-    const createdNewUser = await db.User.create(newUser);
+    const createdNewUser = await User.create(newUser);
     createdNewUser.errorMessage = null;
 
     return createdNewUser;
@@ -26,7 +26,7 @@ class userAuthService {
 
   static async getUser({ userId, passwd }) {
     // db에 해당 아이디 존재 여부 확인
-    const user = await db.User.findOne({ where: { userId } });
+    const user = await User.findByUserId(userId);
     if (!user) {
       const errorMessage = '존재하지 않는 아이디입니다. 다시 확인해 주세요.';
       return { errorMessage };
@@ -54,7 +54,7 @@ class userAuthService {
   }
 
   static async getUserInfo({ userId }) {
-    const user = await db.User.findOne({ where: { userId } });
+    const user = await User.findByUserId(userId);
 
     if (!user) {
       const errorMessage = '해당 유저가 존재하지 않습니다. 다시 한 번 확인해 주세요.';
@@ -65,7 +65,7 @@ class userAuthService {
   }
 
   static async setUser({ id, contents }) {
-    let user = await db.User.findOne({ where: { id } });
+    let user = await User.findById(id);
 
     if (!user) {
       const errorMessage = '해당 유저가 존재하지 않습니다. 다시 한 번 확인해 주세요.';
@@ -73,26 +73,23 @@ class userAuthService {
     }
 
     if (contents.passwd) {
-      const hashedPasswd = await bcrypt.hash(passwd, 10);
-      user = await db.User.update({ passwd: hashedPasswd }, { where: { id } });
+      contents.passwd = await bcrypt.hash(passwd, 10);
     }
 
-    if (contents.description) {
-      const newDescription = contents.description;
-      user = await db.User.update({ description: newDescription }, { where: { id } });
+    let ok = await User.updateUser(id, contents);
+
+    if (!ok) {
+      const errorMessage = '데이터 형식이 올바르지 않습니다. 다시 확인해 주세요.';
+      return { errorMessage };
     }
 
-    if (contents.img) {
-      const newImg = contents.img;
-      user = await db.User.update({ img: newImg }, { where: id });
-    }
-
-    user.errorMessage = null;
-    return user;
+    const updatedUser = await User.findById(id);
+    updatedUser.errorMessage = null;
+    return updatedUser;
   }
 
   static async deleteUser({ id }) {
-    const user = await db.User.findOne({ where: { id } });
+    const user = await User.findById(id);
 
     if (!user) {
       if (!user) {
@@ -101,10 +98,14 @@ class userAuthService {
       }
     }
 
-    const deletedUser = await db.User.destroy({ where: { id } });
-    deletedUser.errorMessage = null;
+    const ok = await User.deleteUser(id);
 
-    return deletedUser;
+    if (!ok) {
+      const errorMessage = '데이터 형식이 올바르지 않습니다. 다시 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    return { ok };
   }
 }
 

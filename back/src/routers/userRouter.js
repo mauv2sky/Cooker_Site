@@ -16,10 +16,14 @@ userAuthRouter.post('/user/join', async (req, res, next) => {
     // req 데이터 가져오기
     const userId = req.body.userId;
     const passwd = req.body.passwd;
+    const email = req.body.email;
+    const tel = req.body.tel;
 
     const newUser = await userAuthService.addUser({
       userId,
       passwd,
+      email,
+      tel,
     });
 
     if (newUser.errorMessage) {
