@@ -31,7 +31,7 @@ bossUserAuthRouter.post('/boss/join', async function (req, res, next) {
     }
 
     res.status(200).json({
-      message: 'succ',
+      ok: true,
     });
   } catch (error) {
     next(error);
