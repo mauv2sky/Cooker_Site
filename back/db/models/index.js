@@ -1,6 +1,5 @@
 import Sequelize from 'sequelize';
 import config from '../config/config';
-import bossUser from './schemas/bossUser';
 import User from './schemas/user';
 import bossUser from './schemas/bossUser';
 console.log(config);
