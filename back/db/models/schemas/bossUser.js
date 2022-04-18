@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-module.exports = class BossUser extends Sequelize.Model {
+module.exports = class BossUserModel extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {

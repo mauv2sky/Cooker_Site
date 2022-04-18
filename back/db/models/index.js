@@ -1,6 +1,6 @@
-import Sequelize from "sequelize";
-import config from "../config/config";
-import BossUser from "./schemas/bossUser";
+import Sequelize from 'sequelize';
+import config from '../config/config';
+import BossUserModel from './schemas/bossUser';
 console.log(config);
 
 let sequelize = new Sequelize(
@@ -15,8 +15,8 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.BossUser = BossUser;
-BossUser.init(sequelize);
-BossUser.associate(db);
+db.BossUserModel = BossUserModel;
+BossUserModel.init(sequelize);
+BossUserModel.associate(db);
 
 export default db;
