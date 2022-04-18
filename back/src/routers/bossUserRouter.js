@@ -13,14 +13,14 @@ bossUserAuthRouter.post('/boss/join', async function (req, res, next) {
     }
 
     // req (request) 에서 데이터 가져오기
-    const ceo_id = req.body.ceo_id;
+    const ceoId = req.body.ceoId;
     const passwd = req.body.passwd;
     const email = req.body.email;
     const tel = req.body.tel;
 
     // 위 데이터를 유저 db에 추가하기
     const newUser = await bossUserAuthService.addBossUser({
-      ceo_id,
+      ceoId,
       passwd,
       email,
       tel,
