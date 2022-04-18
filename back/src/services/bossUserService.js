@@ -2,9 +2,9 @@ import bcrypt from 'bcrypt';
 import { BossUser } from '../../db/models/model/BossUser';
 
 class bossUserAuthService {
-  static async addBossUser({ ceo_id, passwd, email, tel }) {
+  static async addBossUser({ ceoId, passwd, email, tel }) {
     // 이메일 중복 확인
-    const bossUser = await BossUser.findByCeoId({ ceo_id });
+    const bossUser = await BossUser.findByCeoId({ ceoId });
 
     if (bossUser) {
       const errorMessage =
@@ -15,7 +15,7 @@ class bossUserAuthService {
     // 비밀번호 해쉬화
     const hashedPassword = await bcrypt.hash(passwd, 10);
 
-    const newBossUser = { ceo_id, passwd: hashedPassword, email, tel };
+    const newBossUser = { ceoId, passwd: hashedPassword, email, tel };
 
     // db에 저장
     const createdNewBossUser = await BossUser.create({ newBossUser });
