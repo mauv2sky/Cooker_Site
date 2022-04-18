@@ -1,20 +1,20 @@
 import Sequelize from 'sequelize';
 
-module.exports = class BossUserModel extends Sequelize.Model {
+module.exports = class bossUser extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        user_id: {
+        ceo_id: {
           type: Sequelize.STRING(20),
           allowNull: false,
           unique: true,
         },
         passwd: {
-          type: Sequelize.STRING(20),
+          type: Sequelize.STRING(100),
           allowNull: false,
         },
         email: {
-          type: Sequelize.STRING(20),
+          type: Sequelize.STRING(50),
           allowNull: false,
         },
         tel: {
@@ -35,7 +35,7 @@ module.exports = class BossUserModel extends Sequelize.Model {
         timestamps: false, // 자동으로 날짜 컬럼을 추가하는 옵션
         underscored: false, // 스네이크 케이스로 바꾸는 옵션
         modelName: 'BossUser', // 모델 이름
-        tableName: 'bossUsers', // 실제 데이터베이스의 테이블 이름
+        tableName: 'BossUsers', // 실제 데이터베이스의 테이블 이름
         paranoid: false, // deletedAt 컬럼을 생성하는 옵션
         charset: 'utf8', // 한글 설정
         collate: 'utf8_general_ci', // 한글 설정
