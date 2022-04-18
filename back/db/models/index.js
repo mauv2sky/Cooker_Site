@@ -17,7 +17,7 @@ bossUser.init(sequelize);
 user.associate(db);
 bossUser.associate(db);
 
-db.User = user;
+db.user = user;
 db.bossUser = bossUser;
 
 export default db;

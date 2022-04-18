@@ -1,5 +1,5 @@
 import db from '../../models';
-const user = db.User;
+const user = db.user;
 
 class User {
   static async create(newUser) {
