@@ -5,10 +5,10 @@ class BossUser {
     const createdBossUser = await db.bossUser.create(newBossUser);
     return createdBossUser;
   }
-  static async findByCeoId({ ceo_id }) {
+  static async findByCeoId({ ceoId }) {
     const boss = await db.bossUser.findOne({
       where: {
-        ceo_id,
+        ceoId,
       },
     });
     return boss;
