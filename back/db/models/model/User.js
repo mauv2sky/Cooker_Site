@@ -14,12 +14,20 @@ class User {
     return await user.findByPk(id);
   }
 
+  static async findByEmail(email) {
+    return await user.findOne({ where: { email } });
+  }
+
   static async updateUser(id, contents) {
     return await user.update(contents, { where: { id } });
   }
 
   static async deleteUser(id) {
     return await user.destroy({ where: { id } });
+  }
+
+  static async setPasswd(id, newPasswd) {
+    return await user.update(newPasswd, { where: { id } });
   }
 }
 
