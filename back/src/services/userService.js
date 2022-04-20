@@ -71,11 +71,9 @@ class userAuthService {
       const errorMessage = '해당 유저가 존재하지 않습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
     }
-
     if (contents.passwd) {
-      contents.passwd = await bcrypt.hash(passwd, 10);
+      contents.passwd = await bcrypt.hash(contents.passwd, 10);
     }
-
     let ok = await User.updateUser(id, contents);
 
     if (!ok) {
@@ -106,6 +104,29 @@ class userAuthService {
     }
 
     return { ok };
+  }
+
+  static async setPasswd({ email, toUpdate }) {
+    let user = await User.findByEmail(email);
+
+    if (!user) {
+      const errorMessage = '존재하지 않는 사용자 입니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    if (toUpdate.passwd) {
+      const hashedPasswd = await bcrypt.hash(toUpdate.passwd, 10);
+      const newPasswd = { passwd: hashedPasswd };
+
+      let ok = await User.updateUser(user.id, newPasswd);
+
+      if (!ok) {
+        const errorMessage = '데이터 형식이 올바르지 않습니다. 다시 확인해 주세요.';
+        return { errorMessage };
+      }
+
+      return { ok };
+    }
   }
 }
 

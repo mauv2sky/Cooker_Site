@@ -1,5 +1,6 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
+import nodemailer from 'nodemailer';
 import { userAuthService } from '../services/userService';
 import { login_required } from '../middlewares/login_required';
 
@@ -102,6 +103,53 @@ userAuthRouter.delete('/user/:id', login_required, async (req, res, next) => {
     if (deletedUser.errorMessage) {
       throw new Error(deletedUser.errorMessage);
     }
+
+    res.status(200).json({
+      ok: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 비밀번호 찾기
+userAuthRouter.post('/user/reset_passwd', async (req, res, next) => {
+  try {
+    const email = req.body.email;
+
+    const generatedAuthNumber = Math.floor(Math.random() * 10 ** 8)
+      .toString()
+      .padStart(8, '0');
+
+    const toUpdate = { passwd: generatedAuthNumber };
+    const resetedPasswd = await userAuthService.setPasswd({
+      email,
+      toUpdate,
+    });
+
+    if (resetedPasswd.errorMessage) {
+      throw new Error(resetedPasswd.errorMessage);
+    }
+
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.NODEMAILER_USER,
+        pass: process.env.NODEMAILER_PASS,
+      },
+    });
+
+    let info = await transporter.sendMail({
+      from: `Cooker-site <${process.env.NODEMAILER_USER}>`,
+      to: email,
+      subject: '비밀번호 변경 안내 메일입니다.',
+      html: `<b>${generatedAuthNumber}</b>`,
+    });
+
+    console.log(`Email sent: ${info.messageId}`);
 
     res.status(200).json({
       ok: true,
