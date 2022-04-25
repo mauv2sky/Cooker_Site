@@ -11,7 +11,9 @@ userAuthRouter.post('/user/join', async (req, res, next) => {
   // req 형식 및 데이터 유무 확인
   try {
     if (is.emptyObject(req.body)) {
-      throw new Error('headers의 Content-Type을 application/json으로 설정해 주세요.');
+      throw new Error(
+        'headers의 Content-Type을 application/json으로 설정해 주세요.'
+      );
     }
 
     // req 데이터 가져오기
