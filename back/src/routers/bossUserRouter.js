@@ -1,14 +1,14 @@
-import is from '@sindresorhus/is';
-import { Router } from 'express';
-import { bossUserAuthService } from '../services/bossUserService';
+import is from "@sindresorhus/is";
+import { Router } from "express";
+import { bossUserAuthService } from "../services/bossUserService";
 
 const bossUserAuthRouter = Router();
 
-bossUserAuthRouter.post('/boss/join', async function (req, res, next) {
+bossUserAuthRouter.post("/boss/join", async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
-        'headers의 Content-Type을 application/json으로 설정해주세요'
+        "headers의 Content-Type을 application/json으로 설정해주세요"
       );
     }
 
@@ -38,11 +38,11 @@ bossUserAuthRouter.post('/boss/join', async function (req, res, next) {
   }
 });
 
-bossUserAuthRouter.post('/boss/login', async (req, res, next) => {
+bossUserAuthRouter.post("/boss/login", async (req, res, next) => {
   try {
     const ceoId = req.body.ceoId;
     const passwd = req.body.passwd;
-    console.log(ceoId, passwd);
+
     const boss = await bossUserAuthService.getBossUser({ ceoId, passwd });
 
     if (boss.errorMessage) {
