@@ -38,4 +38,21 @@ bossUserAuthRouter.post('/boss/join', async function (req, res, next) {
   }
 });
 
+bossUserAuthRouter.post('/boss/login', async (req, res, next) => {
+  try {
+    const ceoId = req.body.ceoId;
+    const passwd = req.body.passwd;
+
+    const boss = await bossUserAuthService.getBossUser({ ceoId, passwd });
+
+    if (boss.errorMessage) {
+      throw new Error(boss.errorMessage);
+    }
+
+    res.status(200).json(boss);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { bossUserAuthRouter };
