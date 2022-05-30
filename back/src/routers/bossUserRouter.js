@@ -55,4 +55,21 @@ bossUserAuthRouter.post('/boss/login', async (req, res, next) => {
   }
 });
 
+// 사장 유저 정보 가져오기
+bossUserAuthRouter.get('/boss/:ceo_id', async (req, res, next) => {
+  try {
+    const ceoId = req.params.ceo_id;
+
+    const boss = await bossUserAuthService.getBossUserInfo({ ceoId });
+
+    if (boss.errorMessage) {
+      throw new Error(boss.errorMessage);
+    }
+
+    res.status(200).json(boss);
+  } catch {
+    next(error);
+  }
+});
+
 export { bossUserAuthRouter };

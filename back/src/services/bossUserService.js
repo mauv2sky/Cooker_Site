@@ -50,6 +50,18 @@ class bossUserAuthService {
 
     return loginBossUser;
   }
+
+  // 사장 유저 정보 가져오기
+  static async getBossUserInfo({ ceoId }) {
+    const boss = await BossUser.findByCeoId({ ceoId });
+
+    if (!boss) {
+      const errorMessage = '해당하는 유저가 없습니다. 다시 한번 확인해주세요.';
+      return { errorMessage };
+    }
+
+    return boss;
+  }
 }
 
 export { bossUserAuthService };
