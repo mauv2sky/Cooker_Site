@@ -99,4 +99,27 @@ bossUserAuthRouter.put('/boss/:id', login_required, async (req, res, next) => {
   }
 });
 
+// 사장 정보 삭제하기(탈퇴)
+bossUserAuthRouter.delete(
+  '/boss/:id',
+  login_required,
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
+
+      const boss = await bossUserAuthService.deleteBossUser({ id });
+
+      if (boss.errorMessage) {
+        throw new Error(boss.errorMessage);
+      }
+
+      res.status(200).json({
+        ok: true,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { bossUserAuthRouter };

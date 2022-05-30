@@ -30,6 +30,11 @@ class BossUser {
 
     return boss;
   }
+  static async deleteBossUser({ id }) {
+    const boss = await db.bossUser.destroy({ where: { id } });
+
+    return boss;
+  }
 }
 
 export { BossUser };
