@@ -50,6 +50,63 @@ class bossUserAuthService {
 
     return loginBossUser;
   }
+
+  // 사장 유저 정보 가져오기
+  static async getBossUserInfo({ ceoId }) {
+    const boss = await BossUser.findByCeoId({ ceoId });
+
+    if (!boss) {
+      const errorMessage = '해당하는 유저가 없습니다. 다시 한번 확인해주세요.';
+      return { errorMessage };
+    }
+
+    return boss;
+  }
+
+  //사장 유저 정보 수정하기
+  static async setBossUser({ id, contents }) {
+    const boss = await BossUser.findById({ id });
+
+    if (!boss) {
+      const errorMessage = '해당하는 유저가 없습니다. 다시 한번 확인해주세요.';
+      return { errorMessage };
+    }
+
+    if (contents.passwd) {
+      contents.passwd = await bcrypt.hash(contents.passwd, 10);
+    }
+
+    let ok = await BossUser.updateBossUser(id, contents);
+
+    if (!ok) {
+      const errorMessage =
+        '데이터 형식이 올바르지 않습니다. 다시 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    const updatedBossUser = await BossUser.findById({ id });
+    updatedBossUser.errorMessage = null;
+    return updatedBossUser;
+  }
+
+  static async deleteBossUser({ id }) {
+    const boss = await BossUser.findById({ id });
+
+    if (!boss) {
+      const errorMessage = '해당하는 유저가 없습니다. 다시 한번 확인해주세요.';
+      return { errorMessage };
+    }
+
+    const ok = await BossUser.deleteBossUser({ id });
+
+    if (!ok) {
+      const errorMessage =
+        '데이터 형식이 올바르지 않습니다. 다시 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    return ok;
+  }
 }
 
 export { bossUserAuthService };
