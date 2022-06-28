@@ -31,6 +31,37 @@ const bossUserAuthRouter = Router();
  */
 bossUserAuthRouter.post('/boss/join', bossUserController.register);
 
+/**
+ * @swagger
+ * /boss/login:
+ *  post:
+ *    tags:
+ *      - bossUser
+ *    description: bossUer 로그인
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              ceoId:
+ *                type: string
+ *              passwd:
+ *                type: string
+ *    responses:
+ *      200:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                token:
+ *                  type: string
+ *                id:
+ *                  type: number
+ *        description: bossUser 로그인 성공
+ */
 bossUserAuthRouter.post('/boss/login', bossUserController.login);
 
 // 사장 유저 정보 가져오기
