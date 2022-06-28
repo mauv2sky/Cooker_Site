@@ -4,6 +4,31 @@ import { login_required } from '../middlewares/login_required';
 
 const bossUserAuthRouter = Router();
 
+/**
+ * @swagger
+ * /boss/join:
+ *  post:
+ *    tags:
+ *      - bossUser
+ *    description: bossUer 회원가입
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: "#/components/schemas/BossUser"
+ *    responses:
+ *      200:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                ok:
+ *                  type: boolean
+ *                  default: true
+ *        description: bossUser 회원가입 성공
+ */
 bossUserAuthRouter.post('/boss/join', bossUserController.register);
 
 bossUserAuthRouter.post('/boss/login', bossUserController.login);
