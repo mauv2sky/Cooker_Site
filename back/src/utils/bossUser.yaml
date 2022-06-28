@@ -1,0 +1,16 @@
+components:
+  schemas:
+    BossUser:
+      properties:
+        ceoId:
+          type: string
+        passwd:
+          type: string
+        email:
+          type: string
+        tel:
+          type: string
+        description:
+          type: string
+        img:
+          type: string

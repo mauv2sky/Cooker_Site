@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import db from '../db/models';
-import { swaggerUi, specs } from './utils/swagger';
+import { swaggerUi, specs } from '../swagger';
 import { userAuthRouter } from './routers/userRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
 import { bossUserAuthRouter } from './routers/bossUserRouter';
