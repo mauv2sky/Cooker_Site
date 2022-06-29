@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import db from '../db/models';
+import { swaggerUi, specs } from '../swagger';
 import { userAuthRouter } from './routers/userRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
 import { bossUserAuthRouter } from './routers/bossUserRouter';
@@ -24,6 +25,7 @@ db.sequelize
   });
 
 app.use(userAuthRouter);
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(errorMiddleware);
 

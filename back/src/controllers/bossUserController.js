@@ -1,7 +1,8 @@
 import is from '@sindresorhus/is';
+import { bossUserAuthService } from '../services/bossUserService';
 
 class bossUserController {
-  static async register(req, res, nest) {
+  static async register(req, res, next) {
     try {
       if (is.emptyObject(req.body)) {
         throw new Error(
@@ -35,7 +36,7 @@ class bossUserController {
     }
   }
 
-  static async login(req, res, nest) {
+  static async login(req, res, next) {
     try {
       const ceoId = req.body.ceoId;
       const passwd = req.body.passwd;
